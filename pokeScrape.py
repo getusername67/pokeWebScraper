@@ -1,4 +1,4 @@
-#Matthew San
+#Matthew Sanders
 #Scrapes raid pokemon data from thesilphroad.com and sends an email with the data
 #Last edited 11/23/22
 
