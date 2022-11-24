@@ -2,7 +2,6 @@
 #Scrapes raid pokemon data from thesilphroad.com and sends an email with the data
 #Last edited 11/23/22
 
-import math
 import time
 from selenium import webdriver
 from selenium.webdriver import Chrome
@@ -44,10 +43,8 @@ for x in allPokeTypes:
     k = 0
     for y in indivTypes:
         #strips the image src to get the type
-        deleteSubString1 = y.get_attribute("src").replace("https://assets.thesilphroad.com/img/pogo-assets/type-", "")
-        deleteSubString2 = deleteSubString1.replace(".png", "")
-
-        raidBosses[i][k+1] = deleteSubString2
+        delSubStrings = y.get_attribute("src").replace("https://assets.thesilphroad.com/img/pogo-assets/type-", "").replace(".png", "")
+        raidBosses[i][k+1] = delSubStrings
         k += 1
     if raidBosses[i][2] == 0:
         raidBosses[i][2] = "none"
@@ -66,13 +63,23 @@ for x in allPokemonDiffs:
     for y in indivDiffs:
         diffNum = y.get_attribute("class").replace("hexagon difficulty", "")
         diffs.append(diffNum)
-    recommendedGroupSize = 0
-    while int(diffs[recommendedGroupSize]) < 3:
-        recommendedGroupSize += 1
-    raidBosses[i][3] = recommendedGroupSize + 1
+    recommendGroupSize = 0
+    while int(diffs[recommendGroupSize]) < 3:
+        recommendGroupSize += 1
+    raidBosses[i][3] = recommendGroupSize + 1
     i += 1
 
 #send to email
+message = "" 
+i = 0
+while i < len(raidBosses):
+    message += raidBosses[i][0] + "\n"
+    message += "Type 1: " + raidBosses[i][1] + "\nType 2: " + raidBosses[i][2] + "\n"
+    message += "Recommended Group Size: " + str(raidBosses[i][3]) + "\n"
+    message += '\n'
+    i += 1
+
+print(message)
 
 while True:
     pass
